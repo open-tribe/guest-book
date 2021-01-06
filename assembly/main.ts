@@ -21,7 +21,11 @@ export function addMessage(text: string): void {
   if (u128.gt(amount, u128.Zero)) {
     const account_id = context.sender;
     const current_donation = getDonation(account_id);
-    donations.set(account_id, u128.add(current_donation, amount));
+    const new_donation = u128.add(current_donation, amount);
+    // may have overflow issue here
+    if (u128.gt(new_donation, current_donation)) {
+      donations.set(account_id, u128.add(current_donation, amount));
+    }
   }
 }
 
