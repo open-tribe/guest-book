@@ -16,12 +16,12 @@ export function addMessage(text: string): void {
   const message = new PostedMessage(text);
   // Adding the message to end of the the persistent collection
   messages.push(message);
-  // Only increment donation when the value is greater than zero
+  // Only increment donation when the amount is greater than zero
   const amount = context.attachedDeposit;
   if (u128.gt(amount, u128.Zero)) {
     const account_id = context.sender;
-    const currentDonation = getDonation(account_id);
-    donations.set(account_id, u128.add(currentDonation, amount));
+    const current_donation = getDonation(account_id);
+    donations.set(account_id, u128.add(current_donation, amount));
   }
 }
 
