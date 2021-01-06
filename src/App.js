@@ -64,9 +64,9 @@ const App = ({ contract, currentUser, nearConfig, wallet }) => {
         // change the number representation
         donation = Big(donation).div(10 ** 24).toFixed(2);
         setTotalDonation(donation);
-      })
+      });
     }
-  }
+  };
 
   return (
     <main>
