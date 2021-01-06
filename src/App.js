@@ -16,7 +16,7 @@ const App = ({ contract, currentUser, nearConfig, wallet }) => {
   useEffect(() => {
     // TODO: don't just fetch once; subscribe!
     contract.getMessages().then(setMessages);
-    contract.getDonation().then(setDonation);
+    updateAllDonation();
   }, []);
 
   const onSubmit = (e) => {
@@ -41,9 +41,7 @@ const App = ({ contract, currentUser, nearConfig, wallet }) => {
         fieldset.disabled = false;
         message.focus();
       });
-      contract.getDonation().then(donation => {
-        setDonation(donation);
-      })
+      updateAllDonation();
     });
   };
 
@@ -58,6 +56,15 @@ const App = ({ contract, currentUser, nearConfig, wallet }) => {
     wallet.signOut();
     window.location.replace(window.location.origin + window.location.pathname);
   };
+
+  const updateAllDonation = () => {
+    if (wallet.isSignedIn()) {
+      const account_id = wallet.getAccountId()
+      contract.getDonation({ account_id }).then(donation => {
+        setDonation(donation);
+      })
+    }
+  }
 
   return (
     <main>
