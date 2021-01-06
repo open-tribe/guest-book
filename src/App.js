@@ -11,12 +11,12 @@ const BOATLOAD_OF_GAS = Big(3).times(10 ** 13).toFixed();
 
 const App = ({ contract, currentUser, nearConfig, wallet }) => {
   const [messages, setMessages] = useState([]);
-  const [allDonation, setDonation] = useState(0);
+  const [totalDonation, setTotalDonation] = useState(0);
 
   useEffect(() => {
     // TODO: don't just fetch once; subscribe!
     contract.getMessages().then(setMessages);
-    updateAllDonation();
+    updateTotalDonation();
   }, []);
 
   const onSubmit = (e) => {
@@ -41,7 +41,7 @@ const App = ({ contract, currentUser, nearConfig, wallet }) => {
         fieldset.disabled = false;
         message.focus();
       });
-      updateAllDonation();
+      updateTotalDonation();
     });
   };
 
@@ -57,13 +57,13 @@ const App = ({ contract, currentUser, nearConfig, wallet }) => {
     window.location.replace(window.location.origin + window.location.pathname);
   };
 
-  const updateAllDonation = () => {
+  const updateTotalDonation = () => {
     if (wallet.isSignedIn()) {
       const account_id = wallet.getAccountId()
       contract.getDonation({ account_id }).then(donation => {
         // change the number representation
         donation = (donation / (10 ** 24)).toFixed(2);
-        setDonation(donation);
+        setTotalDonation(donation);
       })
     }
   }
@@ -81,7 +81,7 @@ const App = ({ contract, currentUser, nearConfig, wallet }) => {
         ? <Form onSubmit={onSubmit} currentUser={currentUser} />
         : <SignIn/>
       }
-      { !!currentUser && !!messages.length && allDonation && <Messages messages={messages} allDonation={allDonation} /> }
+      { !!currentUser && !!messages.length && <Messages messages={messages} totalDonation={totalDonation} /> }
     </main>
   );
 };
