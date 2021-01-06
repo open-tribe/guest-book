@@ -62,7 +62,7 @@ const App = ({ contract, currentUser, nearConfig, wallet }) => {
       const account_id = wallet.getAccountId()
       contract.getDonation({ account_id }).then(donation => {
         // change the number representation
-        donation = (donation / (10 ** 24)).toFixed(2);
+        donation = Big(donation).div(10 ** 24).toFixed(2);
         setTotalDonation(donation);
       })
     }
