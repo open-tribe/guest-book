@@ -11,10 +11,12 @@ const BOATLOAD_OF_GAS = Big(3).times(10 ** 13).toFixed();
 
 const App = ({ contract, currentUser, nearConfig, wallet }) => {
   const [messages, setMessages] = useState([]);
+  const [allDonation, setDonation] = useState([]);
 
   useEffect(() => {
     // TODO: don't just fetch once; subscribe!
     contract.getMessages().then(setMessages);
+    contract.getDonation().then(setDonation);
   }, []);
 
   const onSubmit = (e) => {
@@ -39,6 +41,9 @@ const App = ({ contract, currentUser, nearConfig, wallet }) => {
         fieldset.disabled = false;
         message.focus();
       });
+      contract.getDonation().then(donation => {
+        setDonation(donation);
+      })
     });
   };
 
@@ -67,7 +72,7 @@ const App = ({ contract, currentUser, nearConfig, wallet }) => {
         ? <Form onSubmit={onSubmit} currentUser={currentUser} />
         : <SignIn/>
       }
-      { !!currentUser && !!messages.length && <Messages messages={messages}/> }
+      { !!currentUser && !!messages.length && allDonation && <Messages messages={messages} allDonation={allDonation} /> }
     </main>
   );
 };
@@ -75,7 +80,8 @@ const App = ({ contract, currentUser, nearConfig, wallet }) => {
 App.propTypes = {
   contract: PropTypes.shape({
     addMessage: PropTypes.func.isRequired,
-    getMessages: PropTypes.func.isRequired
+    getMessages: PropTypes.func.isRequired,
+    getDonation: PropTypes.func.isRequired,
   }).isRequired,
   currentUser: PropTypes.shape({
     accountId: PropTypes.string.isRequired,

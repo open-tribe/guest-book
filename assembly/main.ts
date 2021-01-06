@@ -1,4 +1,5 @@
-import { PostedMessage, messages } from './model';
+import { PostedMessage, messages, donations } from './model';
+import { u128, context } from "near-sdk-as";
 
 // --- contract code goes below
 
@@ -15,6 +16,13 @@ export function addMessage(text: string): void {
   const message = new PostedMessage(text);
   // Adding the message to end of the the persistent collection
   messages.push(message);
+
+  const amount = context.attachedDeposit;
+  if (u128.gt(amount, u128.Zero)) {
+    const account_id = context.sender;
+    const currentDonation = getDonation(account_id);
+    donations.set(account_id, u128.add(currentDonation, amount));
+  }
 }
 
 /**
@@ -29,4 +37,9 @@ export function getMessages(): PostedMessage[] {
     result[i] = messages[i + startIndex];
   }
   return result;
+}
+
+// get donation
+export function getDonation(account_id: string): u128 {
+  return donations.get(account_id, u128.Zero)!
 }
