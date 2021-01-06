@@ -61,6 +61,8 @@ const App = ({ contract, currentUser, nearConfig, wallet }) => {
     if (wallet.isSignedIn()) {
       const account_id = wallet.getAccountId()
       contract.getDonation({ account_id }).then(donation => {
+        // change the number representation
+        donation = (donation / (10 ** 24)).toFixed(2);
         setDonation(donation);
       })
     }
