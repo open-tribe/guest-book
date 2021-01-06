@@ -45,5 +45,5 @@ export function getMessages(): PostedMessage[] {
 
 // get donation
 export function getDonation(account_id: string): u128 {
-  return donations.get(account_id, u128.Zero)!
+  return donations.get(account_id, u128.Zero) || u128.Zero;
 }
