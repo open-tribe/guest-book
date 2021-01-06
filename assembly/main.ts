@@ -24,7 +24,7 @@ export function addMessage(text: string): void {
     const new_donation = u128.add(current_donation, amount);
     // may have overflow issue here
     if (u128.gt(new_donation, current_donation)) {
-      donations.set(account_id, u128.add(current_donation, amount));
+      donations.set(account_id, new_donation);
     }
   }
 }
