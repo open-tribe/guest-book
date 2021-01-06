@@ -11,7 +11,7 @@ const BOATLOAD_OF_GAS = Big(3).times(10 ** 13).toFixed();
 
 const App = ({ contract, currentUser, nearConfig, wallet }) => {
   const [messages, setMessages] = useState([]);
-  const [allDonation, setDonation] = useState([]);
+  const [allDonation, setDonation] = useState(0);
 
   useEffect(() => {
     // TODO: don't just fetch once; subscribe!
